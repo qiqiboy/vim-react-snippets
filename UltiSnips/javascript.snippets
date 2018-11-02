@@ -73,20 +73,20 @@ endsnippet
 # ==========================================
 # React Snippets
 #
-snippet rce "react class exported" b
-import React, { ${2:Pure}Component } from 'react';
+snippet rcc "react class exported" b
+import React, { Component } from 'react';
 
-export default class ${1:`!v expand('%:t:r')`} extends $2Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {};
-	}
+class ${1:`!v expand('%:t:r')`} extends Component {
+	state = {};
 
 	render() {
-		return null;$0
+		return <div className="$1">
+			$2
+		</div>
 	}
 }
+
+export default $1;
 endsnippet
 
 snippet sfc "stateless functional component" b
@@ -211,121 +211,121 @@ endsnippet
 #
 
 # Inline prop types
-snippet pt.a "PropTypes.array" w
+snippet pta "PropTypes.array" w
 PropTypes.array
 endsnippet
 
-snippet pt.ar "PropTypes.array.isRequired" w
+snippet ptar "PropTypes.array.isRequired" w
 PropTypes.array.isRequired
 endsnippet
 
-snippet pt.b "PropTypes.bool" w
+snippet ptb "PropTypes.bool" w
 PropTypes.bool
 endsnippet
 
-snippet pt.br "PropTypes.bool.isRequired" w
+snippet ptbr "PropTypes.bool.isRequired" w
 PropTypes.bool.isRequired
 endsnippet
 
-snippet pt.f "PropTypes.func" w
+snippet ptf "PropTypes.func" w
 PropTypes.func
 endsnippet
 
-snippet pt.fr "PropTypes.func.isRequired" w
+snippet ptfr "PropTypes.func.isRequired" w
 PropTypes.func.isRequired
 endsnippet
 
-snippet pt.nu "PropTypes.number" w
+snippet ptnu "PropTypes.number" w
 PropTypes.number
 endsnippet
 
-snippet pt.nur "PropTypes.number.isRequired" w
+snippet ptnur "PropTypes.number.isRequired" w
 PropTypes.number.isRequired
 endsnippet
 
-snippet pt.o "PropTypes.object" w
+snippet pto "PropTypes.object" w
 PropTypes.object
 endsnippet
 
-snippet pt.or "PropTypes.object.isRequired" w
+snippet ptor "PropTypes.object.isRequired" w
 PropTypes.object.isRequired
 endsnippet
 
-snippet pt.s "PropTyes.string" w
+snippet pts "PropTyes.string" w
 PropTypes.string
 endsnippet
 
-snippet pt.sr "PropTyes.string.isRequired" w
+snippet ptsr "PropTyes.string.isRequired" w
 PropTypes.string.isRequired
 endsnippet
 
-snippet pt.no "PropTypes.node" w
+snippet ptno "PropTypes.node" w
 PropTypes.node
 endsnippet
 
-snippet pt.nor "PropTypes.node.isRequired" w
+snippet ptnor "PropTypes.node.isRequired" w
 PropTypes.node.isRequired
 endsnippet
 
-snippet pt.e "PropTypes.element" w
+snippet pte "PropTypes.element" w
 PropTypes.element
 endsnippet
 
-snippet pt.er "PropTypes.element.isRequired" w
+snippet pter "PropTypes.element.isRequired" w
 PropTypes.element.isRequired
 endsnippet
 
-snippet pt.ao "PropTypes.arrayOf()" w
+snippet ptao "PropTypes.arrayOf()" w
 PropTypes.arrayOf(${1:PropTypes.string})
 endsnippet
 
-snippet pt.aor "PropTypes.arrayOf().isRequired" w
+snippet ptaor "PropTypes.arrayOf().isRequired" w
 PropTypes.arrayOf(${1:PropTypes.string}).isRequired
 endsnippet
 
-snippet pt.io "PropTypes.instanceOf()" w
+snippet ptio "PropTypes.instanceOf()" w
 PropTypes.instanceOf(${1:PropTypes.string})
 endsnippet
 
-snippet pt.ior "PropTypes.instanceOf().isRequired" w
+snippet ptior "PropTypes.instanceOf().isRequired" w
 PropTypes.instanceOf(${1:PropTypes.string}).isRequired
 endsnippet
 
-snippet pt.oo "PropTypes.objectOf()" w
+snippet ptoo "PropTypes.objectOf()" w
 PropTypes.objectOf(${1:PropTypes.string})
 endsnippet
 
-snippet pt.oor "PropTypes.objectOf().isRequired" w
+snippet ptoor "PropTypes.objectOf().isRequired" w
 PropTypes.objectOf(${1:PropTypes.string}).isRequired
 endsnippet
 
-snippet pt.one "PropTypes.oneOf([])" w
+snippet ptone "PropTypes.oneOf([])" w
 PropTypes.oneOf(['$1'$2])
 endsnippet
 
-snippet pt.oner "PropTypes.oneOf([]).isRequired" w
+snippet ptoner "PropTypes.oneOf([]).isRequired" w
 PropTypes.oneOf(['$1'$2]).isRequired
 endsnippet
 
-snippet pt.onet "PropTYpes.oneOfType([])" w
+snippet ptonet "PropTYpes.oneOfType([])" w
 PropTypes.oneOfType([
 	$1
 ])
 endsnippet
 
-snippet pt.onetr "PropTYpes.oneOfType([]).isRequired" w
+snippet ptonetr "PropTYpes.oneOfType([]).isRequired" w
 PropTypes.oneOfType([
 	$1
 ]).isRequired
 endsnippet
 
-snippet pt.sh "PropTypes.shape" w
+snippet ptsh "PropTypes.shape" w
 PropTypes.shape({
 	$1
 })
 endsnippet
 
-snippet pt.shr "PropTypes.shape.isRequired" w
+snippet ptshr "PropTypes.shape.isRequired" w
 PropTypes.shape({
 	$1
 }).isRequired
