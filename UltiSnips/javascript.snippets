@@ -12,6 +12,18 @@ snippet imp "import package that converts from camelCase or PascalCase to kebab-
 import $1 from '$2`!p snip.rv=lowerdash(t[1])`';
 endsnippet
 
+snippet irf "import react-formutil" b
+import { withForm } from 'react-formutil';
+endsnippet
+
+snippet irfa "import react-antd-formutil" b
+import { withForm, FormItem } from 'react-antd-formutil';
+endsnippet
+
+snippet irfb "import react-bootstrap-formutil" b
+import { withForm, FormGroup } from 'react-bootstrap-formutil';
+endsnippet
+
 snippet impf "import File from './File'" b
 import $1 from '${2:./}${3:$1}';
 endsnippet
