@@ -105,7 +105,24 @@ snippet sfc "stateless functional component" b
 import React from 'react';
 
 const ${1:`!v expand('%:t:r')`} = props => {
-	return null;$0
+	return <div className="`!p snip.rv=lowerdash(t[1])`$2">
+			$3
+		</div>
+};
+
+export default $1;
+endsnippet
+
+# react functional component with hooks
+snippet hfc "stateless functional component (with hooks)" b
+import React, { useState } from "react";
+
+const ${1:`!v expand('%:t:r')`} = props => {
+	const [state, setState] = useState(null);
+
+	return <div className="`!p snip.rv=lowerdash(t[1])`$2">
+			$3
+		</div>
 };
 
 export default $1;
@@ -173,7 +190,7 @@ shouldComponentUpdate(nextProps, nextState) {
 endsnippet
 
 snippet gsbu "get snapshot before update" b
-public getSnapshotBeforeUpdate(prevProps, prevState) {
+getSnapshotBeforeUpdate(prevProps, prevState) {
 	return null;$0
 }
 endsnippet

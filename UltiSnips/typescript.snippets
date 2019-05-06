@@ -36,21 +36,42 @@ class ${1:`!v expand('%:t:r')`} extends Component<I$1Props, I$1State> {
 export default $1;
 endsnippet
 
+# react functional component
 snippet sfc "stateless functional component (with prop interace)" b
-import * as React from "react";
+import React from "react";
 
 export interface I$1Props {
 }
 
-const ${1:`!v expand('%:t:r')`}: React.SFC<$2I$1Props> = props => {
-	return null;$0
+const ${1:`!v expand('%:t:r')`}: React.SFC<I$1Props> = props => {
+	return <div className="`!p snip.rv=lowerdash(t[1])`$2">
+			$3
+		</div>
+};
+
+export default $1;
+endsnippet
+
+# react functional component with hooks
+snippet hfc "stateless functional component (with hooks)" b
+import React, { useState } from "react";
+
+export interface I$1Props {
+}
+
+const ${1:`!v expand('%:t:r')`}: React.FC<I$1Props> = props => {
+	const [state, setState] = useState(null);
+
+	return <div className="`!p snip.rv=lowerdash(t[1])`$2">
+			$3
+		</div>
 };
 
 export default $1;
 endsnippet
 
 snippet sfcnp "stateless functional component (without prop interface)" b
-import * as React from "react";
+import React from "react";
 
 const ${1:`!v expand('%:t:r')`} = () => {
 	return null;$0
