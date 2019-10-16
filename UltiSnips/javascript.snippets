@@ -1,27 +1,20 @@
 global !p
-def capscore(t):
-	return '_'.join([ w.upper() for w in re.findall('[A-Z]+[a-z]*', t) ])
-
+def upperfirst(t):
+	if len(t) < 2:
+		return '' if len(t) < 1 else t.capitalize()
+	return t[0].capitalize() + t[1:]
 def lowerdash(t):
 	return '-'.join([ w.lower() for w in re.findall('[a-z]+|[A-Z]+[a-z]*', t) ])
 endglobal
 
 # Normal javascript snippets
 #
+snippet rc "require package that converts from camelCase or PascalCase to kebab-cased" b
+const $1 = require('$2`!p snip.rv=lowerdash(t[1])`');
+endsnippet
+
 snippet imp "import package that converts from camelCase or PascalCase to kebab-cased" b
 import $1 from '$2`!p snip.rv=lowerdash(t[1])`';
-endsnippet
-
-snippet irf "import react-formutil" b
-import { withForm } from 'react-formutil';
-endsnippet
-
-snippet irfa "import react-antd-formutil" b
-import { withForm, FormItem } from 'react-antd-formutil';
-endsnippet
-
-snippet irfb "import react-bootstrap-formutil" b
-import { withForm, FormGroup } from 'react-bootstrap-formutil';
 endsnippet
 
 snippet impf "import File from './File'" b
@@ -32,20 +25,24 @@ snippet impn "import { nested } from" b
 import { $1 } from '$2';
 endsnippet
 
-snippet impp "import file without a declaration" b
-import '$1';
+snippet impa "import * as Thing from" b
+import * as $1 from "$2`!p snip.rv=lowerdash(t[1])`";
 endsnippet
 
-snippet rc "require package that converts from camelCase or PascalCase to kebab-cased" b
-const $1 = require('$2`!p snip.rv=lowerdash(t[1])`');
+snippet impp "import file without a declaration" b
+import '$1';
 endsnippet
 
 snippet icn "import classnames as cn" b
 import cn from 'classnames';
 endsnippet
 
-snippet ise "import shallowEqual" b
-import shallowEqual from 'shallowequal';
+snippet ism "import scss module" b
+import ${2:styles} from './${1:`!v expand('%:t:r')`}.module.scss';
+endsnippet
+
+snippet exp "export { default } from './CurrentFolderName'"
+export { default } from './${1:`!v expand('%:p:h:t')`}';
 endsnippet
 
 snippet expf "export File from './File'" b
@@ -56,16 +53,65 @@ snippet expn "export nested" b
 export { $1 } from '$2';
 endsnippet
 
+snippet expd "export { default as File } from './File'" b
+export { default as $1 } from '${2:./}$1';
+endsnippet
+
 snippet expa "export * from" b
 export * from '$1';
 endsnippet
 
 snippet cl "console.log"
-console.log($1);
+console.log($1)
 endsnippet
 
 snippet clv "console.log variable"
-console.log('$1:', $1);
+console.log('$1:', $1)
+endsnippet
+
+snippet ce "console.error"
+console.error($1)
+endsnippet
+
+snippet cw "console.warn"
+console.warn($1)
+endsnippet
+
+snippet ct "console.table"
+console.table($1)
+endsnippet
+
+# ==========================================
+# Test Snippets
+#
+snippet rtf "React Test File" b
+import React from 'react';
+import { cleanup, render } from '@testing-library/react';
+
+import ${1:`!v expand('%:t:r')`} from '../$1';
+
+afterEach(cleanup);
+
+describe('$1', () => {
+	it('should $2', () => {
+		$3
+	});
+});
+endsnippet
+
+snippet rhtf "React Hooks Test File" b
+import { cleanup } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
+
+import $2 from '../${1:`!v expand('%:t:r')`}';
+
+afterEach(cleanup);
+
+describe('$1', () => {
+	it('should $3', () => {
+		$4
+	});
+});
 endsnippet
 
 snippet desc "describe a test" b
@@ -82,14 +128,22 @@ it('should $1', () => {
 });
 endsnippet
 
+snippet todo "it.todo()" b
+it.todo('should $1');
+endsnippet
+
 # ==========================================
 # React Snippets
 #
-snippet rcc "react class exported" b
+snippet rcc "React class exported" b
 import React, { Component } from 'react';
 
 class ${1:`!v expand('%:t:r')`} extends Component {
-	state = {};
+	constructor(props) {
+		super(props);
+
+		this.state = {};
+	}
 
 	render() {
 		return <div className="`!p snip.rv=lowerdash(t[1])`$2">
@@ -101,7 +155,15 @@ class ${1:`!v expand('%:t:r')`} extends Component {
 export default $1;
 endsnippet
 
-snippet sfc "stateless functional component" b
+snippet rcon "React class constructor" b
+constructor(props) {
+	super(props);
+
+	this.state = ${1:{}};$0
+}
+endsnippet
+
+snippet sfc "function component exported" b
 import React from 'react';
 
 const ${1:`!v expand('%:t:r')`} = props => {
@@ -113,22 +175,7 @@ const ${1:`!v expand('%:t:r')`} = props => {
 export default $1;
 endsnippet
 
-# react functional component with hooks
-snippet hfc "stateless functional component (with hooks)" b
-import React, { useState } from "react";
-
-const ${1:`!v expand('%:t:r')`} = props => {
-	const [state, setState] = useState(null);
-
-	return <div className="`!p snip.rv=lowerdash(t[1])`$2">
-			$1$0
-		</div>
-};
-
-export default $1;
-endsnippet
-
-snippet sfcnp "stateless functional component" b
+snippet sfce "simple function component export (no props)" b
 import React from 'react';
 
 const ${1:`!v expand('%:t:r')`} = () => {
@@ -136,6 +183,12 @@ const ${1:`!v expand('%:t:r')`} = () => {
 };
 
 export default $1;
+endsnippet
+
+snippet fc "functional component" b
+const $1 = props => {
+	return null;$0
+};
 endsnippet
 
 snippet rcf "react class function" b
@@ -173,7 +226,13 @@ endsnippet
 
 snippet gds "get derived state from props" b
 static getDerivedStateFromProps(nextProps, prevState) {
-	return null;$0
+	return ${1:null};$0
+}
+endsnippet
+
+snippet gde "get derived state from error" b
+static getDerivedStateFromError(error) {
+	return ${1:null};$0
 }
 endsnippet
 
@@ -185,18 +244,18 @@ endsnippet
 
 snippet scu "should component update" b
 shouldComponentUpdate(nextProps, nextState) {
-	return $1;
+	return ${1:true};$0
 }
 endsnippet
 
 snippet gsbu "get snapshot before update" b
 getSnapshotBeforeUpdate(prevProps, prevState) {
-	return null;$0
+	return ${1:null};$0
 }
 endsnippet
 
 snippet cdu "component did update" b
-componentDidUpdate(prevProps, prevState, ${1:snapshot}) {
+componentDidUpdate(prevProps, prevState${1:, snapshot}) {
 	$0
 }
 endsnippet
@@ -236,125 +295,276 @@ endsnippet
 
 
 # ==========================================
+# Hooks and effects
+#
+
+# react functional component with hooks
+snippet hfc "stateless functional component (with hooks)" b
+import React, { useState } from "react";
+
+const ${1:`!v expand('%:t:r')`} = props => {
+	const [state, setState] = useState(null);
+
+	return <div className="`!p snip.rv=lowerdash(t[1])`$2">
+			$1$0
+		</div>
+};
+
+export default $1;
+endsnippet
+
+snippet useS "useState()" b
+const [$1, set$3`!p snip.rv=upperfirst(t[1])`] = useState($2);
+endsnippet
+
+snippet useE "useEffect()" b
+useEffect(() => {
+	$1$0
+}$2);
+endsnippet
+
+snippet useC "useContext()" b
+const ${1:context} = useContext($2);
+endsnippet
+
+snippet useRed "useReducer(reducer, initialValue)" b
+const [${3:state}, ${4:dispatch}] = useReducer(${1:reducer}, ${2:null});
+endsnippet
+
+snippet useCB "useCallback(fn, inputs)" b
+const ${1:callback} = useCallback(($2) => ${3:{
+	$4
+}}, [$5]);
+endsnippet
+
+snippet useM "useMemo(fn, inputs)" b
+const ${1:memoized} = useMemo(() => ${2:{
+	$3
+}}, [$4]);
+endsnippet
+
+snippet useR "useRef(defaultValue)" b
+const ${1:ref} = useRef(${2:null});
+endsnippet
+
+snippet useI "useImperitiveHandle(ref, createHandle, [inputs])" b
+useImperitiveHandle(${1:ref}, ${4:() => ({
+	$2
+})}, ${5:[$3]})
+endsnippet
+
+snippet useL "useLayoutEffect()" b
+useLayoutEffect(() => {
+	$1
+});
+endsnippet
+
+snippet useD "useDebugValue(value)" b
+useDebugValue(${1:null});
+endsnippet
+
+# ==========================================
+# "Inline" versions of hooks
+#
+
+priority -1
+snippet useC "useContext()" w
+useContext$2($1);
+endsnippet
+
+snippet useCB "useCallback(fn, inputs)" w
+useCallback(($1) => ${2:{
+	$3
+}}, [$4]);
+endsnippet
+
+snippet useM "useMemo(fn, inputs)" w
+useMemo(() => ${1:{
+	$2
+}}, [$3]);
+endsnippet
+
+snippet useR "useRef(defaultValue)" w
+useRef$2(${1:null});$0
+endsnippet
+
+priority 0
+
+# ==========================================
+# Other useful react/redux snippets
+#
+
+snippet fref "React forward ref" b
+export default forwardRef((props, ref) => <${1:`!v expand('%:t:r')`} {...props} ${2:forwardedRef}={ref} />);
+endsnippet
+
+snippet cc "React create context" b
+export const $1 = createContext($2);
+endsnippet
+
+snippet @c "@connect" b
+@connect(${1:state})
+endsnippet
+
+snippet @ca "@connectAdvanced" b
+@connectAdvanced(${1:dispatch} => {
+	$2
+	return (${3:state}${4:, props}) => {
+		$0
+		return {};
+	};
+})
+endsnippet
+
+snippet cf "connect function" w
+connect(${1:state})(${2:`!v expand('%:t:r')`});
+endsnippet
+
+snippet caf "connect advanced function" w
+connectAdvanced(${1:dispatch} => {
+	$2
+	return (${3:state}${4:, props}) => {
+		$5
+		return {};
+	};
+})(${6:`!v expand('%:t:r')`});
+endsnippet
+
+snippet bac "bind action creators" b
+const ${1:actions} = bindActionCreators({ $2 }, dispatch);$0
+endsnippet
+
+priority -1
+snippet bac "bind action creators" w
+bindActionCreators({ $1 }, dispatch);$0
+endsnippet
+
+snippet fref "React forward ref" w
+forwardRef((props, ref) => <${1:`!v expand('%:t:r')`} {...props} ${2:forwardedRef}={ref} />);
+endsnippet
+
+priority 0
+
+# ==========================================
 # Prop Types Section
 #
 
 # Inline prop types
-snippet pta "PropTypes.array" w
+snippet pt.a "PropTypes.array" w
 PropTypes.array
 endsnippet
 
-snippet ptar "PropTypes.array.isRequired" w
+snippet pt.ar "PropTypes.array.isRequired" w
 PropTypes.array.isRequired
 endsnippet
 
-snippet ptb "PropTypes.bool" w
+snippet pt.b "PropTypes.bool" w
 PropTypes.bool
 endsnippet
 
-snippet ptbr "PropTypes.bool.isRequired" w
+snippet pt.br "PropTypes.bool.isRequired" w
 PropTypes.bool.isRequired
 endsnippet
 
-snippet ptf "PropTypes.func" w
+snippet pt.f "PropTypes.func" w
 PropTypes.func
 endsnippet
 
-snippet ptfr "PropTypes.func.isRequired" w
+snippet pt.fr "PropTypes.func.isRequired" w
 PropTypes.func.isRequired
 endsnippet
 
-snippet ptnu "PropTypes.number" w
+snippet pt.nu "PropTypes.number" w
 PropTypes.number
 endsnippet
 
-snippet ptnur "PropTypes.number.isRequired" w
+snippet pt.nur "PropTypes.number.isRequired" w
 PropTypes.number.isRequired
 endsnippet
 
-snippet pto "PropTypes.object" w
+snippet pt.o "PropTypes.object" w
 PropTypes.object
 endsnippet
 
-snippet ptor "PropTypes.object.isRequired" w
+snippet pt.or "PropTypes.object.isRequired" w
 PropTypes.object.isRequired
 endsnippet
 
-snippet pts "PropTyes.string" w
+snippet pt.s "PropTyes.string" w
 PropTypes.string
 endsnippet
 
-snippet ptsr "PropTyes.string.isRequired" w
+snippet pt.sr "PropTyes.string.isRequired" w
 PropTypes.string.isRequired
 endsnippet
 
-snippet ptno "PropTypes.node" w
+snippet pt.no "PropTypes.node" w
 PropTypes.node
 endsnippet
 
-snippet ptnor "PropTypes.node.isRequired" w
+snippet pt.nor "PropTypes.node.isRequired" w
 PropTypes.node.isRequired
 endsnippet
 
-snippet pte "PropTypes.element" w
+snippet pt.e "PropTypes.element" w
 PropTypes.element
 endsnippet
 
-snippet pter "PropTypes.element.isRequired" w
+snippet pt.er "PropTypes.element.isRequired" w
 PropTypes.element.isRequired
 endsnippet
 
-snippet ptao "PropTypes.arrayOf()" w
+snippet pt.ao "PropTypes.arrayOf()" w
 PropTypes.arrayOf(${1:PropTypes.string})
 endsnippet
 
-snippet ptaor "PropTypes.arrayOf().isRequired" w
+snippet pt.aor "PropTypes.arrayOf().isRequired" w
 PropTypes.arrayOf(${1:PropTypes.string}).isRequired
 endsnippet
 
-snippet ptio "PropTypes.instanceOf()" w
+snippet pt.io "PropTypes.instanceOf()" w
 PropTypes.instanceOf(${1:PropTypes.string})
 endsnippet
 
-snippet ptior "PropTypes.instanceOf().isRequired" w
+snippet pt.ior "PropTypes.instanceOf().isRequired" w
 PropTypes.instanceOf(${1:PropTypes.string}).isRequired
 endsnippet
 
-snippet ptoo "PropTypes.objectOf()" w
+snippet pt.oo "PropTypes.objectOf()" w
 PropTypes.objectOf(${1:PropTypes.string})
 endsnippet
 
-snippet ptoor "PropTypes.objectOf().isRequired" w
+snippet pt.oor "PropTypes.objectOf().isRequired" w
 PropTypes.objectOf(${1:PropTypes.string}).isRequired
 endsnippet
 
-snippet ptone "PropTypes.oneOf([])" w
+snippet pt.one "PropTypes.oneOf([])" w
 PropTypes.oneOf(['$1'$2])
 endsnippet
 
-snippet ptoner "PropTypes.oneOf([]).isRequired" w
+snippet pt.oner "PropTypes.oneOf([]).isRequired" w
 PropTypes.oneOf(['$1'$2]).isRequired
 endsnippet
 
-snippet ptonet "PropTYpes.oneOfType([])" w
+snippet pt.onet "PropTYpes.oneOfType([])" w
 PropTypes.oneOfType([
 	$1
 ])
 endsnippet
 
-snippet ptonetr "PropTYpes.oneOfType([]).isRequired" w
+snippet pt.onetr "PropTYpes.oneOfType([]).isRequired" w
 PropTypes.oneOfType([
 	$1
 ]).isRequired
 endsnippet
 
-snippet ptsh "PropTypes.shape" w
+snippet pt.sh "PropTypes.shape" w
 PropTypes.shape({
 	$1
 })
 endsnippet
 
-snippet ptshr "PropTypes.shape.isRequired" w
+snippet pt.shr "PropTypes.shape.isRequired" w
 PropTypes.shape({
 	$1
 }).isRequired
