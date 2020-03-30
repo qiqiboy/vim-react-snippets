@@ -86,29 +86,25 @@ endsnippet
 #
 snippet rtf "React Test File" b
 import React from "react";
-import { cleanup, render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import ${1:`!v expand('%:t:r')`} from "../$1";
 
-afterEach(cleanup);
-
 describe("$1", () => {
-	it("should $2", () => {
+	test("should $2", async () => {
 		$3
 	});
 });
 endsnippet
 
 snippet rhtf "React Hooks Test File" b
-import { cleanup } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 
 import $2 from "../${1:`!v expand('%:t:r')`}";
 
-afterEach(cleanup);
-
 describe("$1", () => {
-	it("should $3", () => {
+	test("should $3", () => {
 		$4
 	});
 });
@@ -116,20 +112,20 @@ endsnippet
 
 snippet desc "describe a test" b
 describe("$1", () => {
-	it("should $2", () => {
+	test("should $2", () => {
 		$3
 	});
 });
 endsnippet
 
 snippet it "create a test block" b
-it("should $1", () => {
+test("should $1", () => {
 	$2
 });
 endsnippet
 
 snippet todo "it.todo()" b
-it.todo("should $1");
+test.todo("should $1");
 endsnippet
 
 snippet intf "create interface for file" b
